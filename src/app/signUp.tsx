@@ -8,7 +8,11 @@ import {
   View,
 } from "react-native";
 
+import { useState } from "react";
+
 const SignUpPage = () => {
+  const [focusedInput, setFocusedInput] = useState("");
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -31,22 +35,40 @@ const SignUpPage = () => {
       <View style={styles.signUpForm}>
         <View style={styles.inputWrapper}>
           <Text>Full Name</Text>
-          <TextInput style={styles.input} placeholder="Enter your name" />
+          <TextInput
+            style={[
+              styles.input,
+              focusedInput === "name" && styles.inputFocused,
+            ]}
+            placeholder="Enter your name"
+            onFocus={() => setFocusedInput("name")}
+            onBlur={() => setFocusedInput("")}
+          />
         </View>
         <View style={styles.inputWrapper}>
           <Text>Email</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              focusedInput === "email" && styles.inputFocused,
+            ]}
             keyboardType="email-address"
             placeholder="Enter your email"
+            onFocus={() => setFocusedInput("email")}
+            onBlur={() => setFocusedInput("")}
           />
         </View>
         <View style={styles.inputWrapper}>
           <Text>Password</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              focusedInput === "password" && styles.inputFocused,
+            ]}
             secureTextEntry
             placeholder="Enter your password"
+            onFocus={() => setFocusedInput("password")}
+            onBlur={() => setFocusedInput("")}
           />
         </View>
 
@@ -108,6 +130,11 @@ const styles = StyleSheet.create({
     gap: 20,
     alignItems: "center",
   },
+
+  inputFocused: {
+    borderColor: "#6D63FF",
+  },
+
   signUpForm: {
     marginTop: 10,
     width: "100%",

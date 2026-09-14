@@ -1,98 +1,160 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from "expo-router";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function Index() {
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.avatarContainer}>
+          <Image
+            source={require("../../assets/images/Landing.png")}
+            style={{ width: "100%", height: "100%", marginTop: 40 }}
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
+        </View>
+        <Text style={styles.title}>Welcome to Finora</Text>
+        <Text style={styles.subtitle}>
+          Explore a modern Experience built for speed and simplicity
+        </Text>
+        <Pressable style={styles.button} onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Get Started</Text>
+        </Pressable>
+      </View>
+      <View style={styles.divider}>
+        <View style={styles.line} />
+        <Text style={styles.orText}>Or</Text>
+        <View style={styles.line} />
+      </View>
+      <View style={styles.socialContainer}>
+        <Pressable style={styles.socialButton}>
+          <Image
+            source={require("../../assets/images/google-icon.png")}
+            style={{ width: 26, height: 26 }}
           />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+          <Text style={styles.socialButtonText}>Sign in with Google</Text>
+        </Pressable>
+        <Pressable style={styles.socialButton}>
+          <Image
+            source={require("../../assets/images/apple-icon.png")}
+            style={{ width: 26, height: 26 }}
+          />
+          <Text style={styles.socialButtonText}>Sign in with Apple</Text>
+        </Pressable>
+        <Pressable style={styles.socialButton}>
+          <Image
+            source={require("../../assets/images/facebook-logo.png")}
+            style={{ width: 26, height: 26 }}
+          />
+          <Text style={styles.socialButtonText}>Sign in with Facebook</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: "white",
+    paddingTop: 50,
+    height: "100%",
+    display: "flex",
+    paddingHorizontal: 20,
+    flexDirection: "column",
+    gap: 20,
+    alignItems: "center",
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+
+  divider: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+
+  line: {
+    height: 1,
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    backgroundColor: "#D9D9D9",
   },
+
+  orText: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#333",
+  },
+
+  header: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
+  },
+
   title: {
-    textAlign: 'center',
+    fontSize: 32,
+    fontWeight: "bold",
   },
-  code: {
-    textTransform: 'uppercase',
+  subtitle: {
+    fontSize: 16,
+    paddingHorizontal: 40,
+    fontWeight: "normal",
+    textAlign: "center",
+    opacity: 0.9,
+    lineHeight: 24,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  socialContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+  },
+
+  socialButton: {
+    backgroundColor: "#ffffff",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 12,
+    alignItems: "center",
+    paddingHorizontal: 25,
+    paddingVertical: 18,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#D9D9D9",
+    width: "100%",
+  },
+
+  socialButtonText: {
+    color: "black",
+    textAlign: "center",
+  },
+
+  avatarContainer: {
+    width: 180,
+    height: 180,
+
+    borderRadius: 90,
+
+    backgroundColor: "#F3F3F3",
+
+    overflow: "hidden",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  button: {
+    backgroundColor: "#6D63FF",
+    paddingHorizontal: 25,
+    paddingVertical: 18,
+    borderRadius: 50,
+    width: "100%",
+  },
+
+  buttonText: {
+    color: "white",
+    textAlign: "center",
   },
 });

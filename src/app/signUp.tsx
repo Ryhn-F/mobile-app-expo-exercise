@@ -1,22 +1,57 @@
 import { router } from "expo-router";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
-export default function Index() {
+const SignUpPage = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.avatarContainer}>
-          <Image
-            source={require("../../assets/images/Landing.png")}
-            style={{ width: "100%", height: "100%", marginTop: 40 }}
+        <View style={styles.avatarWrapper}>
+          <View style={styles.avatarContainer}>
+            <Image
+              source={require("../../assets/images/SignUp.png")}
+              style={{ width: "100%", height: "100%", marginTop: 10 }}
+            />
+          </View>
+          <View style={styles.plusBadge}>
+            <Text style={styles.plusBadgeText}>+</Text>
+          </View>
+        </View>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.subtitle}>
+          Sign Up to get started with your account.
+        </Text>
+      </View>
+      <View style={styles.signUpForm}>
+        <View style={styles.inputWrapper}>
+          <Text>Full Name</Text>
+          <TextInput style={styles.input} placeholder="Enter your name" />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Text>Email</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="email-address"
+            placeholder="Enter your email"
           />
         </View>
-        <Text style={styles.title}>Welcome to Finora</Text>
-        <Text style={styles.subtitle}>
-          Explore a modern Experience built for speed and simplicity
-        </Text>
-        <Pressable style={styles.button} onPress={() => router.push("/signUp")}>
-          <Text style={styles.buttonText}>Get Started</Text>
+        <View style={styles.inputWrapper}>
+          <Text>Password</Text>
+          <TextInput
+            style={styles.input}
+            secureTextEntry
+            placeholder="Enter your password"
+          />
+        </View>
+
+        <Pressable style={styles.button} onPress={() => {}}>
+          <Text style={styles.buttonText}>Create Account</Text>
         </Pressable>
       </View>
       <View style={styles.divider}>
@@ -30,30 +65,27 @@ export default function Index() {
             source={require("../../assets/images/google-icon.png")}
             style={{ width: 26, height: 26 }}
           />
-          <Text style={styles.socialButtonText}>Sign in with Google</Text>
         </Pressable>
         <Pressable style={styles.socialButton}>
           <Image
             source={require("../../assets/images/apple-icon.png")}
             style={{ width: 26, height: 26 }}
           />
-          <Text style={styles.socialButtonText}>Sign in with Apple</Text>
         </Pressable>
         <Pressable style={styles.socialButton}>
           <Image
             source={require("../../assets/images/facebook-logo.png")}
             style={{ width: 26, height: 26 }}
           />
-          <Text style={styles.socialButtonText}>Sign in with Facebook</Text>
         </Pressable>
       </View>
-
       <View
         style={{
           display: "flex",
           flexDirection: "row",
           gap: 4,
           alignItems: "center",
+          marginTop: 20,
         }}
       >
         <Text> Already have an account? </Text>
@@ -63,7 +95,7 @@ export default function Index() {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -76,12 +108,66 @@ const styles = StyleSheet.create({
     gap: 20,
     alignItems: "center",
   },
+  signUpForm: {
+    marginTop: 10,
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 15,
+    height: "auto",
+  },
+
+  inputWrapper: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "column",
+    height: "auto",
+    gap: 4,
+  },
+
+  input: {
+    width: "100%",
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#3333335c",
+  },
+
+  labelText: {
+    fontSize: 15,
+    fontWeight: "400",
+    color: "#333",
+  },
 
   divider: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+  },
+
+  plusBadge: {
+    position: "absolute",
+    right: -2,
+    top: -2,
+    width: 30,
+    height: 30,
+    borderRadius: 90,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#6D63FF",
+  },
+  avatarWrapper: {
+    position: "relative",
+    width: 80,
+    height: 80,
+  },
+
+  plusBadgeText: {
+    color: "white",
+    fontSize: 21,
+    fontWeight: "bold",
   },
 
   line: {
@@ -102,7 +188,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    gap: 20,
+    gap: 12,
   },
 
   title: {
@@ -111,7 +197,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    paddingHorizontal: 40,
+    paddingHorizontal: 10,
     fontWeight: "normal",
     textAlign: "center",
     opacity: 0.5,
@@ -121,7 +207,9 @@ const styles = StyleSheet.create({
   socialContainer: {
     width: "100%",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 12,
   },
 
@@ -132,12 +220,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 12,
     alignItems: "center",
-    paddingHorizontal: 25,
-    paddingVertical: 18,
-    borderRadius: 50,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    borderRadius: 9999,
     borderWidth: 1,
     borderColor: "#D9D9D9",
-    width: "100%",
   },
 
   socialButtonText: {
@@ -146,8 +233,8 @@ const styles = StyleSheet.create({
   },
 
   avatarContainer: {
-    width: 180,
-    height: 180,
+    width: 80,
+    height: 80,
 
     borderRadius: 90,
 
@@ -172,3 +259,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+export default SignUpPage;

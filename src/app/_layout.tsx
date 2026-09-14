@@ -18,6 +18,8 @@ export default function RootLayout() {
       <StatusBar barStyle="light-content" translucent />
       <Stack>
         <StackScreen name="index" options={{ headerShown: false }} />
+        <StackScreen name="login" options={{ headerShown: false }} />
+        <StackScreen name="signUp" options={{ headerShown: false }} />
       </Stack>
     </SafeAreaProvider>
   );

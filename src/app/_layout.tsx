@@ -20,6 +20,7 @@ export default function RootLayout() {
         <StackScreen name="index" options={{ headerShown: false }} />
         <StackScreen name="login" options={{ headerShown: false }} />
         <StackScreen name="signUp" options={{ headerShown: false }} />
+        <StackScreen name="home" options={{ headerShown: false }} />
       </Stack>
     </SafeAreaProvider>
   );

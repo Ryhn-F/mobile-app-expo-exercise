@@ -1,9 +1,120 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
+import { router } from "expo-router";
+import { useState } from "react";
 const LoginPage = () => {
+  const [focusedInput, setFocusedInput] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    if (email.trim() === "" || password.trim() === "") {
+      alert("Please enter both email and password.");
+      return;
+    }
+
+    setEmail("");
+    setPassword("");
+    router.push("/home");
+  };
+
   return (
-    <View>
-      <Text>LoginPage</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.avatarContainer}>
+          <Image
+            source={require("../../assets/images/shieldCheck.png")}
+            style={{ width: "100%", height: "100%", marginTop: 10 }}
+          />
+        </View>
+
+        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.subtitle}>
+          Sign in to continue with your account to continue.
+        </Text>
+      </View>
+      <View style={styles.signUpForm}>
+        <View style={styles.inputWrapper}>
+          <Text>Email</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedInput === "email" && styles.inputFocused,
+            ]}
+            keyboardType="email-address"
+            placeholder="Enter your email"
+            value={email}
+            onChangeText={setEmail}
+            onFocus={() => setFocusedInput("email")}
+            onBlur={() => setFocusedInput("")}
+          />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Text>Password</Text>
+          <TextInput
+            style={[
+              styles.input,
+              focusedInput === "password" && styles.inputFocused,
+            ]}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            placeholder="Enter your password"
+            onFocus={() => setFocusedInput("password")}
+            onBlur={() => setFocusedInput("")}
+          />
+        </View>
+
+        <Pressable style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </Pressable>
+      </View>
+      <View style={styles.divider}>
+        <View style={styles.line} />
+        <Text style={styles.orText}>Or</Text>
+        <View style={styles.line} />
+      </View>
+      <View style={styles.socialContainer}>
+        <Pressable style={styles.socialButton}>
+          <Image
+            source={require("../../assets/images/google-icon.png")}
+            style={{ width: 26, height: 26 }}
+          />
+        </Pressable>
+        <Pressable style={styles.socialButton}>
+          <Image
+            source={require("../../assets/images/apple-icon.png")}
+            style={{ width: 26, height: 26 }}
+          />
+        </Pressable>
+        <Pressable style={styles.socialButton}>
+          <Image
+            source={require("../../assets/images/facebook-logo.png")}
+            style={{ width: 26, height: 26 }}
+          />
+        </Pressable>
+      </View>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 4,
+          alignItems: "center",
+          marginTop: 20,
+        }}
+      >
+        <Text> Don't have an account? </Text>
+        <Pressable onPress={() => router.push("/signUp")}>
+          <Text style={{ color: "#6D63FF" }}>Sign Up</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -20,11 +131,65 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  inputFocused: {
+    borderColor: "#6D63FF",
+  },
+
+  signUpForm: {
+    marginTop: 10,
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 15,
+    height: "auto",
+  },
+
+  inputWrapper: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "column",
+    height: "auto",
+    gap: 4,
+  },
+
+  input: {
+    width: "100%",
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#3333335c",
+  },
+
+  labelText: {
+    fontSize: 15,
+    fontWeight: "400",
+    color: "#333",
+  },
+
   divider: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+  },
+
+  plusBadge: {
+    position: "absolute",
+    right: -2,
+    top: -2,
+    width: 30,
+    height: 30,
+    borderRadius: 90,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#6D63FF",
+  },
+
+  plusBadgeText: {
+    color: "white",
+    fontSize: 21,
+    fontWeight: "bold",
   },
 
   line: {
@@ -45,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    gap: 20,
+    gap: 12,
   },
 
   title: {
@@ -54,17 +219,19 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    paddingHorizontal: 40,
+    paddingHorizontal: 10,
     fontWeight: "normal",
     textAlign: "center",
-    opacity: 0.9,
+    opacity: 0.5,
     lineHeight: 24,
   },
 
   socialContainer: {
     width: "100%",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 12,
   },
 
@@ -75,12 +242,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 12,
     alignItems: "center",
-    paddingHorizontal: 25,
-    paddingVertical: 18,
-    borderRadius: 50,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    borderRadius: 9999,
     borderWidth: 1,
     borderColor: "#D9D9D9",
-    width: "100%",
   },
 
   socialButtonText: {
@@ -89,12 +255,8 @@ const styles = StyleSheet.create({
   },
 
   avatarContainer: {
-    width: 180,
-    height: 180,
-
-    borderRadius: 90,
-
-    backgroundColor: "#F3F3F3",
+    width: 120,
+    height: 120,
 
     overflow: "hidden",
 

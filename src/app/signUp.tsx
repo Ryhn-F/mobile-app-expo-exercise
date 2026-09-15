@@ -12,6 +12,21 @@ import { useState } from "react";
 
 const SignUpPage = () => {
   const [focusedInput, setFocusedInput] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignUp = () => {
+    if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
+      alert("Please fill in all fields.");
+      return;
+    }
+    setName("");
+    setEmail("");
+    setPassword("");
+    router.push("/login");
+    alert("Account created successfully! You can now log in.");
+  };
 
   return (
     <View style={styles.container}>
@@ -36,6 +51,8 @@ const SignUpPage = () => {
         <View style={styles.inputWrapper}>
           <Text>Full Name</Text>
           <TextInput
+            value={name}
+            onChangeText={setName}
             style={[
               styles.input,
               focusedInput === "name" && styles.inputFocused,
@@ -48,6 +65,8 @@ const SignUpPage = () => {
         <View style={styles.inputWrapper}>
           <Text>Email</Text>
           <TextInput
+            value={email}
+            onChangeText={setEmail}
             style={[
               styles.input,
               focusedInput === "email" && styles.inputFocused,
@@ -61,6 +80,8 @@ const SignUpPage = () => {
         <View style={styles.inputWrapper}>
           <Text>Password</Text>
           <TextInput
+            value={password}
+            onChangeText={setPassword}
             style={[
               styles.input,
               focusedInput === "password" && styles.inputFocused,
@@ -72,7 +93,7 @@ const SignUpPage = () => {
           />
         </View>
 
-        <Pressable style={styles.button} onPress={() => {}}>
+        <Pressable style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Create Account</Text>
         </Pressable>
       </View>

@@ -1,3 +1,4 @@
+import { Checkbox } from "expo-checkbox";
 import {
   Image,
   Pressable,
@@ -13,6 +14,7 @@ const LoginPage = () => {
   const [focusedInput, setFocusedInput] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [checked, setChecked] = useState(false);
 
   const handleLogin = () => {
     if (email.trim() === "" || password.trim() === "") {
@@ -71,6 +73,22 @@ const LoginPage = () => {
             onBlur={() => setFocusedInput("")}
           />
         </View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <View style={styles.rememberMeContainer}>
+            <Checkbox value={checked} onValueChange={setChecked} />
+            <Text>Remember me</Text>
+          </View>
+
+          <Pressable onPress={() => {}}>
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
+          </Pressable>
+        </View>
 
         <Pressable style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Sign In</Text>
@@ -107,7 +125,7 @@ const LoginPage = () => {
           flexDirection: "row",
           gap: 4,
           alignItems: "center",
-          marginTop: 20,
+          marginTop: 10,
         }}
       >
         <Text> Don't have an account? </Text>
@@ -123,6 +141,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     paddingTop: 50,
+    maxHeight: "100%",
     height: "100%",
     display: "flex",
     paddingHorizontal: 20,
@@ -142,6 +161,19 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 15,
     height: "auto",
+  },
+
+  forgotPassword: {
+    color: "#333",
+    fontSize: 14,
+  },
+
+  rememberMeContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    opacity: 0.5,
   },
 
   inputWrapper: {

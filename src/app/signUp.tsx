@@ -1,5 +1,7 @@
 import { router } from "expo-router";
 import {
+  ActivityIndicator,
+  Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -8,6 +10,8 @@ import {
   View,
 } from "react-native";
 
+import { signUp } from "@/database/users/users";
+
 import { useState } from "react";
 
 const SignUpPage = () => {
@@ -15,17 +19,35 @@ const SignUpPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
-      alert("Please fill in all fields.");
+      Alert.alert("Missing Fields", "Please fill in all fields.");
       return;
     }
-    setName("");
-    setEmail("");
-    setPassword("");
-    router.push("/login");
-    alert("Account created successfully! You can now log in.");
+
+    setLoading(true);
+    try {
+      await signUp(name, email, password);
+
+      setName("");
+      setEmail("");
+      setPassword("");
+      router.push("/login");
+      Alert.alert(
+        "Success",
+        "Account created successfully! You can now log in.",
+      );
+    } catch (e: any) {
+      Alert.alert(
+        "Sign Up Failed",
+        e.message ?? "Something went wrong. Please try again.",
+      );
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,6 +94,7 @@ const SignUpPage = () => {
               focusedInput === "email" && styles.inputFocused,
             ]}
             keyboardType="email-address"
+            autoCapitalize="none"
             placeholder="Enter your email"
             onFocus={() => setFocusedInput("email")}
             onBlur={() => setFocusedInput("")}
@@ -93,8 +116,16 @@ const SignUpPage = () => {
           />
         </View>
 
-        <Pressable style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Create Account</Text>
+        <Pressable
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleSignUp}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.buttonText}>Create Account</Text>
+          )}
         </Pressable>
       </View>
       <View style={styles.divider}>
@@ -300,6 +331,10 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     borderRadius: 50,
     width: "100%",
+  },
+
+  buttonDisabled: {
+    opacity: 0.7,
   },
 
   buttonText: {

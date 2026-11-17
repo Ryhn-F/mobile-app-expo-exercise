@@ -1,5 +1,7 @@
 import { Checkbox } from "expo-checkbox";
 import {
+  ActivityIndicator,
+  Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -8,23 +10,50 @@ import {
   View,
 } from "react-native";
 
+import { loginUser } from "@/database/users/users";
+
 import { router } from "expo-router";
 import { useState } from "react";
+
 const LoginPage = () => {
   const [focusedInput, setFocusedInput] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    if (email.trim() === "" || password.trim() === "") {
-      alert("Please enter both email and password.");
+  const handleLogin = async () => {
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail || !password.trim()) {
+      Alert.alert("Missing Fields", "Please enter both email and password.");
       return;
     }
 
-    setEmail("");
-    setPassword("");
-    router.push("/home");
+    setLoading(true);
+    try {
+      const user = await loginUser(trimmedEmail, password);
+
+      if (!user) {
+        Alert.alert(
+          "Login Failed",
+          "Invalid email or password. Please try again.",
+        );
+        return;
+      }
+
+      setEmail("");
+      setPassword("");
+      router.push("/home");
+    } catch (error) {
+      console.error("Login error:", error);
+      Alert.alert(
+        "Error",
+        "An unexpected error occurred while logging in. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,6 +80,7 @@ const LoginPage = () => {
               focusedInput === "email" && styles.inputFocused,
             ]}
             keyboardType="email-address"
+            autoCapitalize="none"
             placeholder="Enter your email"
             value={email}
             onChangeText={setEmail}
@@ -90,8 +120,16 @@ const LoginPage = () => {
           </Pressable>
         </View>
 
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Sign In</Text>
+        <Pressable
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.buttonText}>Sign In</Text>
+          )}
         </Pressable>
       </View>
       <View style={styles.divider}>
@@ -302,6 +340,10 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     borderRadius: 50,
     width: "100%",
+  },
+
+  buttonDisabled: {
+    opacity: 0.7,
   },
 
   buttonText: {

@@ -1,7 +1,13 @@
 import { router } from "expo-router";
+import { useEffect } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { initDatabase } from "../database/db";
 
 export default function Index() {
+  useEffect(() => {
+    initDatabase();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

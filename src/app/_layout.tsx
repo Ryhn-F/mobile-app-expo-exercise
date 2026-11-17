@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { StackScreen } from "expo-router/build/layouts/stack-utils";
+import { StackScreen } from "expo-router/build/layouts/stack-utils/StackScreen.js";
 import { StatusBar } from "react-native";
 import {
   SafeAreaProvider,
@@ -15,7 +15,7 @@ export default function RootLayout() {
         paddingBottom: inset.bottom,
       }}
     >
-      <StatusBar barStyle="light-content" translucent />
+      <StatusBar barStyle="light-content" />
       <Stack>
         <StackScreen name="index" options={{ headerShown: false }} />
         <StackScreen name="login" options={{ headerShown: false }} />
